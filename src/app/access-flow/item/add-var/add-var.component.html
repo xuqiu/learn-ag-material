@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-title>新增变量</mat-card-title>
+  <mat-form-field>
+    <mat-select placeholder="类型" [(ngModel)]="itemAddVar.type" [disabled]="step>1" (selectionChange)="method=null">
+      <mat-option *ngFor="let type of ['文本','数字']" [value]="type">
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="itemAddVar.name" placeholder="变量名称" required [formControl]="varName">
+    <mat-error *ngIf="varName.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+  =
+  <mat-form-field>
+    <input matInput [(ngModel)]="itemAddVar.value" placeholder="默认值">
+  </mat-form-field>
+  <button mat-button [mat-dialog-close]="itemAddVar" cdkFocusInitial mat-raised-button [disabled]="varName.invalid">确定</button>
+</mat-card>

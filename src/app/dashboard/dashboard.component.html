@@ -1,0 +1,9 @@
+<h3>热门平台</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let plat of plats" class="col-1-4" routerLink="/detail/{{plat.id}}">
+    <div class="module plat">
+      <h4>{{plat.name}}</h4>
+    </div>
+  </a>
+</div>
+<app-plat-search></app-plat-search>

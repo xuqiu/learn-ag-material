@@ -1,0 +1,35 @@
+<mat-card>
+  <mat-card-title>第一步,选择标准服务和方法</mat-card-title>
+  <mat-form-field>
+    <mat-select placeholder="标准服务" [(ngModel)]="service" [disabled]="step>1" (selectionChange)="method=null">
+      <mat-option *ngFor="let serviceType of options.serviceMethodOptions" [value]="serviceType">
+        {{serviceType.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="service">
+    <mat-select placeholder="标准方法" [(ngModel)]="method" [disabled]="step>1">
+      <mat-option *ngFor="let methodType of service.methods" [value]="methodType">
+        {{methodType.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button *ngIf="method" mat-button (click)="setMethod()" [disabled]="step>1" mat-raised-button>确定</button>
+  <button *ngIf="step>1" mat-button (click)="reset(1)" mat-raised-button><mat-icon>replay</mat-icon>重置</button>
+</mat-card>
+<mat-card *ngIf="step>1">
+  <mat-card-title>第二步,配置流程</mat-card-title>
+
+  <p *ngFor="let item of flowItems;let i=index">
+    <item-note [(ngModel)]="flowItems[i]"></item-note>
+  </p>
+  <button mat-button [matMenuTriggerFor]="menu" mat-raised-button>
+    <mat-icon>add_circle_outline</mat-icon> 新增
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item  *ngFor="let itemType of options.flowItemType" [disabled]="itemType[1].disabled" (click)="addFlowItem(itemType[1])">
+      {{itemType[1].name}}{{itemType[1].disabled?'(暂不支持)':''}}
+    </button>
+  </mat-menu>
+  <button *ngIf="step>1" mat-button (click)="reset(2)" mat-raised-button><mat-icon>replay</mat-icon>重置</button>
+</mat-card>

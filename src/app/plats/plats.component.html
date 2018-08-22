@@ -1,0 +1,19 @@
+<h2>My Plats</h2>
+<ul class="plats">
+  <li *ngFor="let plat of plats">
+    <a routerLink="/detail/{{plat.id}}">
+      <span class="badge">{{plat.id}}</span> {{plat.name}}
+    </a>
+    <button class="delete" title="delete plat"
+            (click)="delete(plat)">x</button>
+  </li>
+</ul>
+<div>
+  <label>Plat name:
+    <input #platName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(platName.value); platName.value=''">
+    add
+  </button>
+</div>

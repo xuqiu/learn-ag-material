@@ -1,0 +1,13 @@
+<div id="search-component">
+  <h4>平台检索</h4>
+
+  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+
+  <ul class="search-result">
+    <li *ngFor="let plat of plats$ | async" >
+      <a routerLink="/detail/{{plat.id}}">
+        {{plat.name}}
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,11 @@
+<div *ngIf="plat">
+  <h2>{{ plat.name | uppercase }} 详情</h2>
+  <div><span>id: </span>{{plat.id}}</div>
+  <div>
+    <label>名称:
+      <input [(ngModel)]="plat.name" placeholder="name">
+    </label>
+  </div>
+</div>
+<button (click)="goBack()">返回</button>
+<button (click)="save()">保存</button>

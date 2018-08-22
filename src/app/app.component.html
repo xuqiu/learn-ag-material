@@ -1,0 +1,32 @@
+<div class="layout-container">
+  <mat-toolbar color="primary" [class.mat-elevation-z6]="isActive" >
+    <mat-toolbar-row>
+      <span>Access Generator</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-sidenav-container>
+    <mat-sidenav #snav class="example-sidenav" opened mode="side">
+      <p>Auto-resizing sidenav</p>
+      <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+      <button (click)="showFiller = !showFiller" mat-raised-button>
+        Toggle extra text
+      </button>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let menu of menuList" [routerLink]="menu.url" >
+          <a matLine>{{menu.name}}</a>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <button type="button" mat-button (click)="snav.toggle()">
+        <mat-icon *ngIf="!snav.opened">toc</mat-icon>
+        <mat-icon *ngIf="snav.opened">first_page</mat-icon>
+      </button>
+      <!--<h1>{{title}}</h1>-->
+        <a routerLink="/dashboard">首页</a>
+      <router-outlet></router-outlet>
+      <app-messages></app-messages>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

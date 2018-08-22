@@ -1,0 +1,97 @@
+<mat-card class="operationCard" >
+    <mat-form-field style="width:80%">
+      <input matInput [(ngModel)]="wsdlUrl" placeholder="wsdl地址" >
+    </mat-form-field>
+    <button mat-button (click)="handle()" [disabled]="loading['handle']" mat-raised-button>解析</button>
+    <mat-progress-bar *ngIf="loading['handle']" mode="indeterminate"></mat-progress-bar>
+  <mat-sidenav-container *ngIf="soapOperations" class="mat-caption nav-small">
+    <mat-sidenav #snav mode="side" fixedTopGap="20" opened>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" vertical [(ngModel)]="soapOperation">
+          <mat-button-toggle mat-button *ngFor="let operation of soapOperations"  (click)="operationChange()" class="operationBtn"
+                             title="{{operation.name}}" matTooltip="{{operation.name}}" [value]="operation">
+            {{ operation.name }}
+          </mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="operationCardContent" >
+      <mat-card *ngIf="!soapOperation">
+        <mat-card-title><mat-icon style="transform: scale(-1,1) rotate(90deg);">touch_app</mat-icon>  请选择方法</mat-card-title>
+      </mat-card>
+      <mat-card *ngIf="soapOperation">
+          <mat-form-field *ngFor="let arg of soapOperation.args">
+            <input matInput [(ngModel)]="arg.value" placeholder="{{arg.name}}" (input)="argChange()">
+          </mat-form-field>
+        <button mat-button (click)="call()" [disabled]="loading['call']" mat-raised-button>提交</button>
+        <mat-progress-bar *ngIf="loading['call']" mode="indeterminate"></mat-progress-bar>
+        <mat-expansion-panel [expanded]="soapOperation.response==null" class="mat-caption">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              请求报文:
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <pre class="mat-caption">{{soapOperation.request}}</pre>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="soapOperation.response" [expanded]="soapOperation.result==null" class="mat-caption">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              响应报文:
+            </mat-panel-title>
+            <mat-panel-description>
+              <button mat-button [disabled]="loading['extract']" (click)="$event.stopPropagation();extract()" class="extract-btn" mat-raised-button>抽取结果数据</button>
+              <button mat-button [disabled]="loading['extract']" [matMenuTriggerFor]="menu" class="extract-btn-option" mat-raised-button (click)="$event.stopPropagation();">
+                <mat-icon>keyboard_arrow_down</mat-icon></button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item  *ngFor="let resultType of ['XML','JSON','文本']" (click)="extract(resultType)">{{resultType}}</button>
+              </mat-menu>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-progress-bar *ngIf="loading['extract']" mode="indeterminate"></mat-progress-bar>
+          <pre class="mat-caption">{{soapOperation.response}}</pre>
+        </mat-expansion-panel>
+        <mat-expansion-panel expanded *ngIf="soapOperation.result!=null" class="mat-caption">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              结果数据:
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <pre class="mat-caption">{{soapOperation.result}}</pre>
+        </mat-expansion-panel>
+      </mat-card>
+
+      <!--<mat-card *ngIf="soapResult">-->
+
+        <!--<mat-card-title>结果</mat-card-title>-->
+
+        <!--<mat-card-content>-->
+          <!--<mat-expansion-panel expanded>-->
+            <!--<mat-expansion-panel-header>-->
+              <!--<mat-panel-title>-->
+                <!--数据:-->
+              <!--</mat-panel-title>-->
+            <!--</mat-expansion-panel-header>-->
+            <!--<pre>{{soapResult.result}}</pre>-->
+          <!--</mat-expansion-panel>-->
+          <!--<mat-expansion-panel expanded>-->
+            <!--<mat-expansion-panel-header>-->
+              <!--<mat-panel-title>-->
+                <!--请求报文:-->
+              <!--</mat-panel-title>-->
+            <!--</mat-expansion-panel-header>-->
+            <!--<pre>{{soapResult.request}}</pre>-->
+          <!--</mat-expansion-panel>-->
+          <!--<mat-expansion-panel expanded>-->
+            <!--<mat-expansion-panel-header>-->
+              <!--<mat-panel-title>-->
+                <!--响应报文:-->
+              <!--</mat-panel-title>-->
+            <!--</mat-expansion-panel-header>-->
+            <!--<pre>{{soapResult.response}}</pre>-->
+          <!--</mat-expansion-panel>-->
+        <!--</mat-card-content>-->
+      <!--</mat-card>-->
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</mat-card>
+
